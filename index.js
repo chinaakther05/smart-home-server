@@ -224,6 +224,7 @@ app.get('/users/email/:email', async (req, res) => {
 
     // Stripe Checkout session
     app.post('/create-checkout-session', async (req, res) => {
+      
       const paymentInfo = req.body;
       const amount = parseInt(paymentInfo.cost) * 100;
 
@@ -451,8 +452,8 @@ app.get('/users/email/:email', async (req, res) => {
 
 
     // Projects (assigned & status update)
-    // --------------------
-    app.get("/projects/assigned/:email", verifyFBToken, async (req, res) => {
+    
+    app.get("/projects/assigned/:email",  verifyFBToken,  verifyAdmin,  async (req, res) => {
       const email = req.params.email;
       if (req.decoded_email !== email) return res.status(403).send({ message: "Forbidden access" });
 
@@ -511,3 +512,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+
+app.use(express.json());
